@@ -1,0 +1,59 @@
+<style lang="less">
+@import "../wxParse/wxParse.wxss";
+</style>
+<template>
+
+  <import src="../wxParse/wxParse.wxml"/>
+  <view>
+    <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import WxParse from '../wxParse/wxParse.js'
+
+  export default class Log extends wepy.page {
+    config = {
+      navigationBarTitleText: '详情页面'
+    }
+    data = {
+      content: '',
+      html_content:'',
+      bindName:'article',
+      loadingFlag:true
+    }
+
+    onLoad(params) {
+      const id = params.id
+      this.methods.get_content(this, id)
+    }
+
+    methods = {
+      loading(that) {
+        if(that.loadingFlag){
+          wx.showLoading({
+            title:'loading'
+          })
+        }else{
+          wx.hideLoading()
+        }
+      },
+      get_content(that, id) {
+        this.loading(that)
+        wx.request({
+          url: 'https://cnodejs.org/api/v1/topic/' + id,
+          method: "GET",
+          dataType: 'json',
+          success: res => {
+            that.loadingFlag = false
+           that.content = res.data.data.content
+            this.loading(that)
+            WxParse.wxParse(that.bindName,'html',that.content,that,5)
+            that.$apply()
+          }
+        })
+      }
+    }
+  }
+</script>
+

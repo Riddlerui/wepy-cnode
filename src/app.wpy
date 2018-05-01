@@ -1,0 +1,51 @@
+<style lang="less">
+
+</style>
+
+<script>
+import wepy from 'wepy';
+
+export default class extends wepy.app {
+  constructor(){
+    super()
+  }
+  config = {
+    pages: ['pages/index','pages/log'],
+    window: {
+      backgroundTextStyle: 'dark',
+      navigationBarBackgroundColor: '#32CD32',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: '#fff',
+      enablePullDownRefresh:true
+    }
+  };
+  globalData = {
+    userInfo:null
+  }
+  onLaunch() {
+    // console.log(this);
+    this.methods.getSetting.bind(this)();
+  }
+  methods = {
+    getSetting() {
+      wx.getSetting({
+        success: res => {
+          console.log(res);
+          if (res.authSetting['scope.userInfo']) {
+            this.methods.getUserInfo.bind(this)();
+          }
+        }
+      });
+    },
+    getUserInfo() {
+      wx.getUserInfo({
+        success: res => {
+          this.globalData.userInfo = res.rawData ;
+          console.log(this.globalData.userInfo);
+
+        }
+      });
+    }
+  };
+}
+</script>

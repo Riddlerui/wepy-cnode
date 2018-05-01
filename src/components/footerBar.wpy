@@ -1,0 +1,27 @@
+<style lang='less'>
+    .footer_bar{
+        position: fixed;
+        bottom: 0%;
+        display: flex;
+        width: 100%;
+        text-align: center;
+        background-color: #f1f1f1;
+        navigator{
+            flex:1;
+            color:coral;
+        }
+    }
+</style>
+<template>
+  <view class='footer_bar'>
+      <!--<navigator url='log'>正在热映</navigator>-->
+      <!--<navigator url='log'>即将上映</navigator>-->
+  </view>
+</template>
+<script>
+    import wepy from "wepy";
+    export default class FooterBar extends wepy.component {
+
+    }
+</script>
+
